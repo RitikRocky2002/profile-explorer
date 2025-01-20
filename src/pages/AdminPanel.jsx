@@ -4,7 +4,7 @@ import AppContext from "./../context/AppContext";
 
 const AdminPanel = () => {
   const { profiles, setProfiles } = useContext(AppContext);
-  const [isOpen, setisOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [newProfile, setNewProfile] = useState({
     id: "",
@@ -47,7 +47,7 @@ const AdminPanel = () => {
         category: "",
         coordinates: { lat: 0, lng: 0 },
       });
-      setisOpen(false);
+      setIsOpen(false);
     } else {
       alert("Please fill in all required fields.");
     }
@@ -75,7 +75,7 @@ const AdminPanel = () => {
       <div className="flex justify-between">
         <h1 className="text-3xl font-bold">Profile Management</h1>
         <button
-          onClick={() => setisOpen(!isOpen)}
+          onClick={() => setIsOpen(!isOpen)}
           className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-2 px-4 rounded-lg
             hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center justify-center gap-2
             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -84,13 +84,85 @@ const AdminPanel = () => {
           Add Profile
         </button>
       </div>
+
+      {/* Add Profile Form */}
       {isOpen && (
         <div className="mt-6 p-4 rounded-lg shadow-2xl border border-gray-700">
-          {/* Input fields for adding a new profile */}
-          {/* Same as before */}
+          <div className="flex flex-col gap-4">
+            <input
+              onChange={onChangeHandler}
+              value={newProfile.name}
+              name="name"
+              className="border p-4 rounded"
+              type="text"
+              placeholder="Name"
+            />
+            <input
+              onChange={onChangeHandler}
+              value={newProfile.photo}
+              name="photo"
+              className="border p-4 rounded"
+              type="text"
+              placeholder="Photo URL"
+            />
+            <input
+              onChange={onChangeHandler}
+              value={newProfile.address}
+              name="address"
+              className="border p-4 rounded"
+              type="text"
+              placeholder="Address"
+            />
+            <select
+              onChange={onChangeHandler}
+              value={newProfile.category}
+              name="category"
+              className="border p-4 rounded"
+            >
+              <option value="">Select Category</option>
+              <option value="developer">Developer</option>
+              <option value="designer">Designer</option>
+              <option value="manager">Manager</option>
+              <option value="other">Other</option>
+            </select>
+            <input
+              onChange={onChangeHandler}
+              value={newProfile.description}
+              name="description"
+              className="border p-4 rounded"
+              type="text"
+              placeholder="Description"
+            />
+            <div className="flex gap-4">
+              <input
+                onChange={onChangeHandler}
+                value={newProfile.coordinates.lat}
+                name="lat"
+                className="border p-4 rounded"
+                type="number"
+                placeholder="Latitude"
+              />
+              <input
+                onChange={onChangeHandler}
+                value={newProfile.coordinates.lng}
+                name="lng"
+                className="border p-4 rounded"
+                type="number"
+                placeholder="Longitude"
+              />
+            </div>
+            <button
+              onClick={createProfile}
+              className="bg-gradient-to-r from-green-600 to-green-700 text-white py-2 px-4 rounded-lg
+                hover:from-green-700 hover:to-green-800 transition-all duration-200"
+            >
+              Add Profile
+            </button>
+          </div>
         </div>
       )}
 
+      {/* Edit Profile Modal */}
       {isEditModalOpen && editProfile && (
         <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] md:w-[50%]">
@@ -168,6 +240,7 @@ const AdminPanel = () => {
         </div>
       )}
 
+      {/* Display Profiles */}
       <div className="space-y-4 mt-6">
         {profiles.map((profile) => (
           <div
